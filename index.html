@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f4c81" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <title>HGP 동충주 보고</title>
+  <style>
+    :root{--blue:#0f4c81;--blue2:#e9f2fa;--green:#2f7d32;--green2:#eaf5ea;--yellow:#fff5cc;--line:#d9e2ec;--bg:#f5f7fa;--text:#1f2937;--muted:#667085;--danger:#b42318}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
+    header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px}
+    header h1{font-size:20px;margin:0 0 8px}.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}.tab{border:0;border-radius:10px;padding:9px 6px;font-weight:700;background:#edf1f5;color:#475467}.tab.active{background:var(--blue);color:#fff}
+    main{padding:14px 14px calc(88px + env(safe-area-inset-bottom));max-width:760px;margin:auto}.page{display:none}.page.active{display:block}.card{background:white;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 2px 7px rgba(16,24,40,.04)}
+    .card h2{font-size:17px;margin:0 0 12px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.common-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:6px;min-width:0;max-width:100%;overflow:hidden}.field label{font-size:12px;color:var(--muted);font-weight:700}input,select,textarea{width:100%;max-width:100%;min-width:0;font-size:16px;border:1px solid #cfd8e3;border-radius:10px;padding:11px;background:white;color:var(--text)}input:focus,select:focus,textarea:focus{outline:2px solid #a8cdec;border-color:var(--blue)}
+    .line-row{display:grid;grid-template-columns:48px 88px 1fr 1fr 1fr;gap:7px;align-items:center;margin:8px 0}.line-row.att{grid-template-columns:48px 1fr}.line-num{font-weight:800;text-align:center;background:#eef3f8;border-radius:9px;padding:11px 4px}.small{font-size:13px}.section-title{font-weight:800;color:var(--blue);margin:4px 0 10px}.person-row{display:grid;grid-template-columns:1fr 38px;gap:7px;margin:7px 0}.person-row button{border:0;border-radius:10px;background:#fee4e2;color:var(--danger);font-size:18px}
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:11px;padding:11px 14px;font-size:15px;font-weight:800;background:var(--blue);color:white}.btn.secondary{background:#edf2f7;color:#344054}.btn.green{background:var(--green)}.btn.danger{background:#fef3f2;color:var(--danger)}
+    pre{white-space:pre-wrap;word-break:keep-all;background:#fbfcfe;border:1px solid var(--line);border-radius:12px;padding:13px;font-family:inherit;font-size:15px;line-height:1.55;margin:0}.hint{font-size:12px;color:var(--muted);line-height:1.5}.status{font-size:13px;color:var(--green);min-height:20px;margin-top:7px;font-weight:700}
+    .record{border-top:1px solid var(--line);padding:11px 0}.record:first-child{border-top:0}.record-title{font-weight:800}.record-meta{font-size:12px;color:var(--muted);margin:3px 0 7px}.pill{display:inline-block;background:var(--blue2);color:var(--blue);font-weight:700;border-radius:999px;padding:3px 8px;font-size:11px;margin-right:4px}
+    footer{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:9}.footer-inner{max-width:760px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    @media(max-width:560px){input[type="date"]{display:block;width:100%!important;max-width:100%!important;min-width:0!important;-webkit-appearance:none;appearance:none;overflow:hidden}.common-grid{width:100%;max-width:100%;overflow:hidden}.grid2{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.common-grid{grid-template-columns:1fr}.common-grid .field{min-width:0}.common-grid input,.common-grid select{min-width:0;width:100%;font-size:16px;padding:11px}.grid2 .field{min-width:0}.grid2 input,.grid2 select{min-width:0;width:100%;font-size:15px;padding:10px 7px}.line-row{grid-template-columns:42px 74px 1fr 1fr 1fr;gap:5px}.line-row input,.line-row select{font-size:14px;padding:10px 6px}.grid2{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<header><h1>HGP 동충주 보고</h1><div class="tabs"><button class="tab active" data-page="operation">가동현황</button><button class="tab" data-page="attendance">출근·잔업</button></div></header>
+<main>
+  <section id="operation" class="page active">
+    <div class="card"><h2>공통 정보</h2><div class="common-grid"><div class="field"><label>날짜</label><input id="opDate" type="date"></div><div class="field"><label>근무</label><select id="opShift"><option>주간</option><option>야간</option></select></div><div class="field"><label>잔업</label><select id="opOvertime"><option>없음</option><option>있음</option></select></div><div class="field"><label>특이사항</label><input id="opNote" value="없음" placeholder="없음"></div></div><div id="saveStatus" class="status"></div></div>
+    <div class="card"><h2>라인별 가동현황</h2><div class="hint">구분은 CV / HR / 미가동 중 선택하고, 가동 라인만 수량을 입력하세요.</div><div id="opLines"></div></div>
+    <div class="card"><h2>가동현황 보고문</h2><pre id="opPreview"></pre><div class="btn-row" style="margin-top:10px"><button class="btn" onclick="copyText('opPreview','가동현황')">텍스트 복사</button><button class="btn secondary" onclick="shareText('opPreview')">공유</button></div><div id="opStatus" class="status"></div></div>
+    <div class="card"><h2>BMA 생산실적</h2><div class="hint">금일 CV/HR 수량은 라인별 생산수량에서 자동 합산됩니다. 전일 데이터가 저장되어 있으면 자동으로 불러오고, 없으면 전일 항목은 출력하지 않습니다.</div></div>
+    <div class="card"><h2>생산실적 보고문</h2><pre id="prodPreview"></pre><div class="btn-row" style="margin-top:10px"><button class="btn" onclick="copyText('prodPreview','생산실적')">텍스트 복사</button><button class="btn secondary" onclick="shareText('prodPreview')">공유</button></div></div>
+    <div class="card"><h2>데이터 백업</h2><div class="hint">가동현황 데이터는 이 아이폰의 앱/웹사이트 저장공간에 날짜별로 자동 저장됩니다. 백업 파일로 내보내거나 다시 복원할 수 있습니다.</div><div class="btn-row" style="margin-top:10px"><button class="btn secondary" onclick="exportBackup()">백업 파일 내보내기</button><button class="btn secondary" onclick="qs('backupFile').click()">백업 복원</button><input id="backupFile" type="file" accept="application/json,.json" style="display:none" onchange="importBackup(event)"></div><div id="backupStatus" class="status"></div></div>
+  </section>
+
+  <section id="attendance" class="page">
+    <div class="card"><h2>공통 정보</h2><div class="common-grid"><div class="field"><label>날짜</label><input id="attDate" type="date"></div><div class="field"><label>근무</label><select id="attShift"><option>주간</option><option selected>야간</option></select></div></div></div>
+    <div class="card"><h2>출근보고 입력</h2><div class="section-title">라인</div><div id="attLines"></div><div class="section-title" style="margin-top:14px">출근 인원</div><div id="attPeople"></div><button class="btn secondary" onclick="addPerson('att')">+ 인원 추가</button></div>
+    <div class="card"><h2>잔업보고 입력</h2><div class="section-title">라인</div><div id="otLines"></div><div class="section-title" style="margin-top:14px">잔업 인원</div><div id="otPeople"></div><button class="btn secondary" onclick="addPerson('ot')">+ 인원 추가</button></div>
+    <div class="card"><h2>출근보고</h2><pre id="attPreview"></pre><div class="btn-row" style="margin-top:10px"><button class="btn" onclick="copyText('attPreview','출근보고')">텍스트 복사</button><button class="btn secondary" onclick="shareText('attPreview')">공유</button></div></div>
+    <div class="card"><h2>잔업보고</h2><pre id="otPreview"></pre><div class="btn-row" style="margin-top:10px"><button class="btn" onclick="copyText('otPreview','잔업보고')">텍스트 복사</button><button class="btn secondary" onclick="shareText('otPreview')">공유</button></div><div id="attStatus" class="status"></div></div>
+  </section>
+
+
+</main>
+<script>
+const qs=id=>document.getElementById(id);
+const STORAGE_KEY='hgp-operation-data-v1';
+const ATT_STORAGE_KEY='hgp-attendance-data-v1';
+const today=new Date(); const iso=today.toISOString().slice(0,10); qs('opDate').value=iso; qs('attDate').value=iso;
+function getStore(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')}catch(e){return {}}}
+function setStore(v){localStorage.setItem(STORAGE_KEY,JSON.stringify(v))}
+function getAttStore(){try{return JSON.parse(localStorage.getItem(ATT_STORAGE_KEY)||'{}')}catch(e){return {}}}
+function setAttStore(v){localStorage.setItem(ATT_STORAGE_KEY,JSON.stringify(v))}
+function attStoreKey(date,shift){return `${date}|${shift}`}
+function collectAttendance(){const readLines=p=>Array.from({length:4},(_,i)=>qs(p+'Type'+(i+1))?.value||'미가동');return {date:qs('attDate').value,shift:qs('attShift').value,attLines:readLines('att'),otLines:readLines('ot'),attPeople:people('att'),otPeople:people('ot'),updatedAt:new Date().toISOString()}}
+function saveAttendance(){const date=qs('attDate').value,shift=qs('attShift').value;if(!date||!shift)return;const st=getAttStore();st[attStoreKey(date,shift)]=collectAttendance();setAttStore(st);const el=qs('attStatus');if(el){el.textContent='출근·잔업 데이터가 자동 저장되었습니다.';clearTimeout(saveAttendance._t);saveAttendance._t=setTimeout(()=>el.textContent='',1200)}}
+function setPeople(prefix,names=[]){const box=qs(prefix+'People');box.innerHTML='';const count=Math.max(4,names.length);for(let i=0;i<count;i++){addPerson(prefix,false,false);const inp=box.lastElementChild.querySelector('input');inp.value=names[i]||''}}
+function clearAttendanceFields(){for(const p of ['att','ot'])for(let i=1;i<=4;i++)qs(p+'Type'+i).value='미가동';setPeople('att',[]);setPeople('ot',[])}
+function loadAttendance(){const date=qs('attDate').value,shift=qs('attShift').value;const rec=getAttStore()[attStoreKey(date,shift)];if(!rec){clearAttendanceFields();return false}for(let i=1;i<=4;i++){qs('attType'+i).value=(rec.attLines||[])[i-1]||'미가동';qs('otType'+i).value=(rec.otLines||[])[i-1]||'미가동'}setPeople('att',rec.attPeople||[]);setPeople('ot',rec.otPeople||[]);return true}
+function dateShiftISO(v,days){if(!v)return '';const [y,m,d]=v.split('-').map(Number);const x=new Date(y,m-1,d);x.setDate(x.getDate()+days);return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}
+function prevISO(v){return dateShiftISO(v,-1)}
+function collectOperation(){const lines=[];for(let i=1;i<=4;i++)lines.push({type:qs('opType'+i)?.value||'미가동',qty:Number(qs('opQty'+i)?.value||0),sense:Number(qs('opSense'+i)?.value||0),lead:Number(qs('opLead'+i)?.value||0)});return {date:qs('opDate').value,shift:qs('opShift').value,overtime:qs('opOvertime').value,note:qs('opNote').value,lines,updatedAt:new Date().toISOString()}}
+function saveOperation(){const date=qs('opDate').value;if(!date)return;const st=getStore();st[date]=collectOperation();setStore(st);const el=qs('saveStatus');if(el){el.textContent='이 날짜 데이터가 자동 저장되었습니다.';clearTimeout(saveOperation._t);saveOperation._t=setTimeout(()=>el.textContent='',1200)}}
+function loadOperation(date){const rec=getStore()[date];if(!rec)return false;qs('opShift').value=rec.shift||'주간';qs('opOvertime').value=rec.overtime||'없음';qs('opNote').value=rec.note||'없음';for(let i=1;i<=4;i++){const r=(rec.lines||[])[i-1]||{};qs('opType'+i).value=r.type||'미가동';qs('opQty'+i).value=(r.qty??'')===0?'':(r.qty??'');qs('opSense'+i).value=(r.sense??'')===0?'':(r.sense??'');qs('opLead'+i).value=(r.lead??'')===0?'':(r.lead??'')}return true}
+function clearOperationFields(){qs('opShift').value='주간';qs('opOvertime').value='없음';qs('opNote').value='없음';for(let i=1;i<=4;i++){qs('opType'+i).value='미가동';qs('opQty'+i).value='';qs('opSense'+i).value='';qs('opLead'+i).value=''}}
+const opLines=qs('opLines');
+for(let i=1;i<=4;i++){opLines.insertAdjacentHTML('beforeend',`<div class="line-row"><div class="line-num">${i}</div><select id="opType${i}"><option>미가동</option><option>CV</option><option>HR</option></select><input id="opQty${i}" inputmode="numeric" type="number" min="0" placeholder="생산수량"><input id="opSense${i}" inputmode="numeric" type="number" min="0" placeholder="센싱 NG"><input id="opLead${i}" inputmode="numeric" type="number" min="0" placeholder="리드 NG"></div>`)}
+const lineOptions='<option>미가동</option><option>CV</option><option>HR</option><option>타사셀</option>';
+for(const [id,prefix] of [['attLines','att'],['otLines','ot']]){for(let i=1;i<=4;i++)qs(id).insertAdjacentHTML('beforeend',`<div class="line-row att"><div class="line-num">${i}</div><select id="${prefix}Type${i}">${lineOptions}</select></div>`)}
+['att','ot'].forEach(p=>{for(let i=0;i<4;i++)addPerson(p,false,false)});
+function addPerson(prefix,focus=true,save=true){const box=qs(prefix+'People'); const n=box.children.length+1; box.insertAdjacentHTML('beforeend',`<div class="person-row"><input class="${prefix}Person" placeholder="이름 ${n}"><button onclick="this.parentElement.remove(); saveAttendance(); updateAll()">×</button></div>`); if(focus)box.lastElementChild.querySelector('input').focus(); if(save)saveAttendance(); updateAll()}
+function fmtDate(v){if(!v)return ''; const [y,m,d]=v.split('-'); return `${m}월 ${d}일`}
+function num(id){return Number(qs(id).value||0).toLocaleString('ko-KR')}
+function operationText(){let out=`HGP 동충주\n${fmtDate(qs('opDate').value)}\nCV PE E603B SKOJ\nHR PE E603D SKOJ\n\n${qs('opShift').value==='주간'?'주간 가동현황':'가동현황'}\n`;
+  const blocks=[]; for(let i=1;i<=4;i++){const t=qs('opType'+i).value;if(t==='CV'||t==='HR'){blocks.push(`${t} PE ${i}\nBMA 생산수량 ${num('opQty'+i)}개\n센싱블럭조립 NG ${num('opSense'+i)}개\n리드밴딩 NG ${num('opLead'+i)}개`)}}
+  if(blocks.length)out+='\n'+blocks.join('\n\n')+'\n'; out+=`\n특이사항: ${qs('opNote').value.trim()||'없음'}`; return out}
+function rawNum(id){return Number(qs(id).value||0)}
+function md(v){if(!v)return '';const d=new Date(v+'T00:00:00');return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`}
+function nextDateLabel(v){if(!v)return '';const d=new Date(v+'T00:00:00');d.setDate(d.getDate()+1);return `${String(d.getMonth()+1).padStart(2,'0')}월 ${String(d.getDate()).padStart(2,'0')}일`}
+function prevDateMD(v){if(!v)return '';const d=new Date(v+'T00:00:00');d.setDate(d.getDate()-1);return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`}
+function productionText(){
+  const date=qs('opDate').value; let cv=0,hr=0;
+  for(let i=1;i<=4;i++){const t=qs('opType'+i).value,q=rawNum('opQty'+i);if(t==='CV')cv+=q;else if(t==='HR')hr+=q}
+  let out=`HGP 동충주
+${fmtDate(date)} BMA 생산실적
+${nextDateLabel(date)} 05시 00분 기준
+
+`;
+  const prev=getStore()[prevISO(date)];
+  if(prev){let pcv=0,phr=0;for(const r of (prev.lines||[])){if(r.type==='CV')pcv+=Number(r.qty||0);else if(r.type==='HR')phr+=Number(r.qty||0)}out+=`전일(${prevDateMD(date)})
+37512-GI900(CV PE):
+${pcv.toLocaleString('ko-KR')}개
+37412-CN600(HR PE):
+${phr.toLocaleString('ko-KR')}개
+
+`}
+  out+=`금일(${md(date)})
+37512-GI900(CV PE):
+${cv.toLocaleString('ko-KR')}개
+37412-CN600(HR PE):
+${hr.toLocaleString('ko-KR')}개
+
+특이사항: ${qs('opNote').value.trim()||'없음'}`;
+  return out
+}
+function exportBackup(){const data={app:'HGP 동충주 보고',version:2,exportedAt:new Date().toISOString(),operationData:getStore(),attendanceData:getAttStore()};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`HGP_동충주_백업_${new Date().toISOString().slice(0,10)}.json`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);qs('backupStatus').textContent='백업 파일을 내보냈습니다.'}
+function importBackup(ev){const f=ev.target.files&&ev.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const obj=JSON.parse(r.result);const incoming=obj.operationData||obj;if(!incoming||typeof incoming!=='object'||Array.isArray(incoming))throw new Error('invalid');const current=getStore();setStore({...current,...incoming});if(obj.attendanceData&&typeof obj.attendanceData==='object'&&!Array.isArray(obj.attendanceData)){setAttStore({...getAttStore(),...obj.attendanceData})}loadOperation(qs('opDate').value);loadAttendance();updateAll();qs('backupStatus').textContent='백업 데이터를 복원했습니다.'}catch(e){alert('올바른 HGP 백업 파일이 아닙니다.')}finally{ev.target.value=''}};r.readAsText(f)}
+
+function linesSummary(prefix){let cv=[],hr=[],third=[];for(let i=1;i<=4;i++){let t=qs(prefix+'Type'+i).value;if(t==='CV')cv.push(i); else if(t==='HR')hr.push(i); else if(t==='타사셀')third.push(i)}return {cv,hr,third}}
+function people(prefix){return [...document.querySelectorAll('.'+prefix+'Person')].map(x=>x.value.trim()).filter(Boolean)}
+function attText(kind){const prefix=kind==='att'?'att':'ot';const s=linesSummary(prefix);const p=people(prefix);let out=`HGP 동충주\n${fmtDate(qs('attDate').value)} ${qs('attShift').value}\nCV PE E603B SKOJ\nHR PE E603D SKOJ\n${kind==='att'?'금일 가동계획':'금일 잔업'}\n`;
+  const hasMain=s.cv.length||s.hr.length;
+  if(hasMain){if(s.cv.length)out+=`CV PE ${s.cv.join(',')}\n`;if(s.hr.length)out+=`HR PE ${s.hr.join(',')}\n`;out+='라인 가동입니다.'}
+  else if(kind==='ot'){out+='청소잔업입니다.'}
+  else if(s.third.length){out+=`타사셀 ${s.third.join(',')}\n라인 가동입니다.`}
+  else{out+='라인 가동입니다.'}
+  out+=`\n\n${kind==='att'?'출근 인원':'잔업인원'}\n${p.length?p.join(','):'-'}\n${p.length}명 입니다.`; return out}
+function updateAll(){qs('opPreview').textContent=operationText(); qs('prodPreview').textContent=productionText(); qs('attPreview').textContent=attText('att'); qs('otPreview').textContent=attText('ot')}
+function handleAutoSave(e){if(e.target.closest('#operation')&&e.target.id!=='opDate'&&e.target.id!=='backupFile')saveOperation();if(e.target.closest('#attendance')&&e.target.id!=='attDate'&&e.target.id!=='attShift')saveAttendance();updateAll()}
+document.addEventListener('input',handleAutoSave);document.addEventListener('change',handleAutoSave);
+qs('opDate').addEventListener('change',()=>{const d=qs('opDate').value;if(!loadOperation(d))clearOperationFields();updateAll()});
+qs('attDate').addEventListener('change',()=>{loadAttendance();updateAll()});
+qs('attShift').addEventListener('change',()=>{loadAttendance();updateAll()});
+loadOperation(iso);loadAttendance();updateAll();
+async function copyText(id,label){try{await navigator.clipboard.writeText(qs(id).textContent); const s=id==='opPreview'?qs('opStatus'):qs('attStatus'); s.textContent=`${label}가 순수 텍스트로 복사되었습니다.`;setTimeout(()=>s.textContent='',1800)}catch(e){alert('복사에 실패했습니다. Safari에서 HTTPS로 열었는지 확인하세요.')}}
+async function shareText(id){const text=qs(id).textContent;if(navigator.share){try{await navigator.share({text})}catch(e){}}else{await navigator.clipboard.writeText(text);alert('공유 기능을 사용할 수 없어 클립보드에 복사했습니다.')}}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));b.classList.add('active');qs(b.dataset.page).classList.add('active')}));
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+</script>
+</body></html>
