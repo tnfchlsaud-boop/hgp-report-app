@@ -110,7 +110,7 @@ function jobChangeText(){
   out+='\n\n현재 가동현황\n';
   if(cv.length||hr.length){if(cv.length)out+=`CV PE ${cv.join(',')}\n`;if(hr.length)out+=`HR PE ${hr.join(',')}\n`;out+='라인 가동입니다.'}
   else if(third.length){out+=`타사셀 ${third.join(',')}\n라인 가동입니다.`}
-  else out+='전라인 미가동입니다.';
+  else out+='전라인 비가동입니다.';
   return out;
 }
 
